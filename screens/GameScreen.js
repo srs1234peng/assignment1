@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Button, Alert } from 'react-native';
 import Card from '../components/Card';
 
-const GameScreen = ({ onRestart, randomNumber, attempts, setAttempts, timeLeft, setTimeLeft, hintUsed, setHintUsed }) => {
+const GameScreen = ({ onRestart, randomNumber, attempts, setAttempts, timeLeft, setTimeLeft, hintUsed, setHintUsed, setCurrentScreen }) => {
   const [guess, setGuess] = useState('');
 
   useEffect(() => {
@@ -11,7 +11,7 @@ const GameScreen = ({ onRestart, randomNumber, attempts, setAttempts, timeLeft, 
       return () => clearTimeout(timer);
     } else {
       Alert.alert('Time is up!', 'You ran out of time.');
-      onRestart();
+      setCurrentScreen('tryAgain');
     }
   }, [timeLeft]);
 
@@ -28,7 +28,7 @@ const GameScreen = ({ onRestart, randomNumber, attempts, setAttempts, timeLeft, 
       setAttempts(attempts - 1);
       if (attempts === 1) {
         Alert.alert('Game Over', 'You ran out of attempts.');
-        onRestart();
+        setCurrentScreen('tryAgain');
       } else {
         Alert.alert('Try Again', `Wrong guess! You have ${attempts - 1} attempts left.`);
       }

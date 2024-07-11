@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import StartScreen from './screens/StartScreen';
 import ConfirmScreen from './screens/ConfirmScreen';
 import GameScreen from './screens/GameScreen';
+import TryAgainScreen from './screens/TryAgainScreen';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('start');
@@ -37,6 +38,14 @@ export default function App() {
     setCurrentScreen('start');
   };
 
+  const handleTryAgain = () => {
+    setCurrentScreen('game');
+  };
+
+  const handleEndGame = () => {
+    setCurrentScreen('start');
+  };
+
   return (
     <View style={styles.container}>
       {currentScreen === 'start' && <StartScreen onStart={handleStart} />}
@@ -59,7 +68,11 @@ export default function App() {
           setTimeLeft={setTimeLeft}
           hintUsed={hintUsed}
           setHintUsed={setHintUsed}
+          setCurrentScreen={setCurrentScreen}
         />
+      )}
+      {currentScreen === 'tryAgain' && (
+        <TryAgainScreen onTryAgain={handleTryAgain} onEndGame={handleEndGame} />
       )}
     </View>
   );
