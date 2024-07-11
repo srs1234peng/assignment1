@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import StartScreen from './screens/StartScreen';
 import ConfirmScreen from './screens/ConfirmScreen';
+import GameScreen from './screens/GameScreen';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('start');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [randomNumber, setRandomNumber] = useState(Math.floor(Math.random() * 100) + 1);
+  const [attempts, setAttempts] = useState(4);
+  const [timeLeft, setTimeLeft] = useState(60);
+  const [hintUsed, setHintUsed] = useState(false);
 
   const handleStart = (enteredName, enteredEmail) => {
     setName(enteredName);
@@ -14,17 +19,46 @@ export default function App() {
     setCurrentScreen('confirm');
   };
 
+  const handleConfirm = () => {
+    setCurrentScreen('game');
+    setRandomNumber(Math.floor(Math.random() * 100) + 1);
+    setAttempts(4);
+    setTimeLeft(60);
+    setHintUsed(false);
+  };
+
+  const handleEdit = () => {
+    setCurrentScreen('start');
+  };
+
+  const handleRestart = () => {
+    setName('');
+    setEmail('');
+    setCurrentScreen('start');
+  };
+
   return (
     <View style={styles.container}>
       {currentScreen === 'start' && <StartScreen onStart={handleStart} />}
-      {/* Future screens like ConfirmScreen will be added here */}
       {currentScreen === 'confirm' && (
         <ConfirmScreen
           name={name}
           email={email}
-          onEdit={() => setCurrentScreen('start')}
-          onConfirm={() => setCurrentScreen('success')}
+          onEdit={handleEdit}
+          onConfirm={handleConfirm}
           visible={true}
+        />
+      )}
+      {currentScreen === 'game' && (
+        <GameScreen
+          onRestart={handleRestart}
+          randomNumber={randomNumber}
+          attempts={attempts}
+          setAttempts={setAttempts}
+          timeLeft={timeLeft}
+          setTimeLeft={setTimeLeft}
+          hintUsed={hintUsed}
+          setHintUsed={setHintUsed}
         />
       )}
     </View>
