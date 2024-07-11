@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import StartScreen from './screens/StartScreen';
+import ConfirmScreen from './screens/ConfirmScreen';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('start');
@@ -17,6 +18,15 @@ export default function App() {
     <View style={styles.container}>
       {currentScreen === 'start' && <StartScreen onStart={handleStart} />}
       {/* Future screens like ConfirmScreen will be added here */}
+      {currentScreen === 'confirm' && (
+        <ConfirmScreen
+          name={name}
+          email={email}
+          onEdit={() => setCurrentScreen('start')}
+          onConfirm={() => setCurrentScreen('success')}
+          visible={true}
+        />
+      )}
     </View>
   );
 }
