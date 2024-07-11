@@ -1,11 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import StartScreen from './screens/StartScreen';
 
 export default function App() {
+  const [currentScreen, setCurrentScreen] = useState('start');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+
+  const handleStart = (enteredName, enteredEmail) => {
+    setName(enteredName);
+    setEmail(enteredEmail);
+    setCurrentScreen('confirm');
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      {currentScreen === 'start' && <StartScreen onStart={handleStart} />}
+      {/* Future screens like ConfirmScreen will be added here */}
     </View>
   );
 }
