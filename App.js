@@ -39,10 +39,15 @@ export default function App() {
   };
 
   const handleTryAgain = () => {
+    setAttempts(4);
+    setTimeLeft(60);
+    setHintUsed(false);
     setCurrentScreen('game');
   };
 
   const handleEndGame = () => {
+    setName('');
+    setEmail('');
     setCurrentScreen('start');
   };
 
