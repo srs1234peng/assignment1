@@ -17,27 +17,33 @@ const StartScreen = ({ onStart, name: initialName, email: initialEmail, agree: i
     setAgree(initialAgree);
   }, [initialName, initialEmail, initialAgree]);
 
-  const validate = () => {
-    let valid = true;
-
+  const validateName = () => {
     if (name.trim().length < 2) {
       setNameError('Name must be at least 2 characters long.');
-      valid = false;
+      return false;
     } else if (!isNaN(name)) {
       setNameError('Name must not be a number.');
-      valid = false;
+      return false;
     } else {
       setNameError('');
+      return true;
     }
+  };
 
+  const validateEmail = () => {
     if (!email.includes('@')) {
       setEmailError('Email is not valid.');
-      valid = false;
+      return false;
     } else {
       setEmailError('');
+      return true;
     }
+  };
 
-    return valid;
+  const validate = () => {
+    const isNameValid = validateName();
+    const isEmailValid = validateEmail();
+    return isNameValid && isEmailValid;
   };
 
   const handleStart = () => {
@@ -63,6 +69,7 @@ const StartScreen = ({ onStart, name: initialName, email: initialEmail, agree: i
           placeholder="Name"
           value={name}
           onChangeText={setName}
+          onBlur={validateName}
         />
         {nameError ? <CustomText style={styles.error}>{nameError}</CustomText> : null}
         <TextInput
@@ -70,6 +77,7 @@ const StartScreen = ({ onStart, name: initialName, email: initialEmail, agree: i
           placeholder="Email address"
           value={email}
           onChangeText={setEmail}
+          onBlur={validateEmail}
         />
         {emailError ? <CustomText style={styles.error}>{emailError}</CustomText> : null}
         <View style={styles.checkboxContainer}>
