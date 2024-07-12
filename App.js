@@ -3,15 +3,12 @@ import { StyleSheet, View } from 'react-native';
 import StartScreen from './screens/StartScreen';
 import ConfirmScreen from './screens/ConfirmScreen';
 import GameScreen from './screens/GameScreen';
-import TryAgainScreen from './screens/TryAgainScreen';
-import CorrectGuessScreen from './screens/CorrectGuessScreen';
-import GameOverScreen from './screens/GameOverScreen';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('start');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [randomNumber, setRandomNumber] = useState(20);// use 20 for testing
+  const [randomNumber, setRandomNumber] = useState(16); // Set fixed value for testing
   const [attempts, setAttempts] = useState(4);
   const [timeLeft, setTimeLeft] = useState(60);
   const [hintUsed, setHintUsed] = useState(false);
@@ -24,8 +21,7 @@ export default function App() {
 
   const handleConfirm = () => {
     setCurrentScreen('game');
-    //setRandomNumber(Math.floor(Math.random() * 100) + 1);
-    setRandomNumber(16);// use 20 for testing
+    setRandomNumber(16); // Set fixed value for testing
     setAttempts(4);
     setTimeLeft(60);
     setHintUsed(false);
@@ -49,18 +45,12 @@ export default function App() {
   };
 
   const handleEndGame = () => {
-    setName('');
-    setEmail('');
     setCurrentScreen('gameOver');
   };
 
   const handleNewGame = () => {
-    //setRandomNumber(Math.floor(Math.random() * 100) + 1);
-    setRandomNumber(16);// use 20 for testing
-    setAttempts(4);
-    setTimeLeft(60);
-    setHintUsed(false);
-    setCurrentScreen('game');
+    setRandomNumber(16); // Set fixed value for testing
+    handleTryAgain();
   };
 
   return (
@@ -79,6 +69,7 @@ export default function App() {
         <GameScreen
           onRestart={handleRestart}
           randomNumber={randomNumber}
+          setRandomNumber={setRandomNumber}
           attempts={attempts}
           setAttempts={setAttempts}
           timeLeft={timeLeft}
@@ -86,22 +77,7 @@ export default function App() {
           hintUsed={hintUsed}
           setHintUsed={setHintUsed}
           setCurrentScreen={setCurrentScreen}
-        />
-      )}
-      {currentScreen === 'tryAgain' && (
-        <TryAgainScreen onTryAgain={handleTryAgain} onEndGame={handleEndGame} />
-      )}
-      {currentScreen === 'correctGuess' && (
-        <CorrectGuessScreen
-          attempts={attempts}
-          randomNumber={randomNumber}
-          onNewGame={handleNewGame}
-        />
-      )}
-      {currentScreen === 'gameOver' && (
-        <GameOverScreen
-          reason={timeLeft === 0 ? 'out of time' : 'out of attempts'}
-          onRestart={handleRestart}
+          handleEndGame={handleEndGame} // Pass handleEndGame function
         />
       )}
     </View>

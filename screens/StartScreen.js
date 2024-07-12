@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
+import CheckBox from 'expo-checkbox';
 import Card from '../components/Card';
 import Input from '../components/Input';
-import Checkbox from 'expo-checkbox';
 
 const StartScreen = ({ onStart }) => {
   const [name, setName] = useState('');
@@ -65,10 +65,9 @@ const StartScreen = ({ onStart }) => {
         />
         {emailError ? <Text style={styles.error}>{emailError}</Text> : null}
         <View style={styles.checkboxContainer}>
-          <Checkbox
+          <CheckBox
             value={agree}
             onValueChange={setAgree}
-            color={agree ? '#4630EB' : undefined}
           />
           <Text style={styles.label}>I am not a robot</Text>
         </View>
@@ -105,11 +104,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   label: {
-    marginLeft: 8,
+    margin: 8,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    width: '100%',
   },
   error: {
     color: 'red',
