@@ -1,19 +1,101 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import StartScreen from './screens/StartScreen';
+import ConfirmScreen from './screens/ConfirmScreen';
+import GameScreen from './screens/GameScreen';
 
 export default function App() {
+  const [currentScreen, setCurrentScreen] = useState('start');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [agree, setAgree] = useState(false);
+  const [randomNumber, setRandomNumber] = useState(Math.floor(Math.random() * 100 + 1));
+  const [attempts, setAttempts] = useState(4);
+  const [timeLeft, setTimeLeft] = useState(60);
+  const [hintUsed, setHintUsed] = useState(false);
+
+  const handleStart = (enteredName, enteredEmail, agreed) => {
+    setName(enteredName);
+    setEmail(enteredEmail);
+    setAgree(agreed);
+    setCurrentScreen('confirm');
+  };
+
+  const handleConfirm = () => {
+    setCurrentScreen('game');
+    setRandomNumber(Math.floor(Math.random() * 100 + 1)); // Set fixed value for testing
+    setAttempts(4);
+    setTimeLeft(60);
+    setHintUsed(false);
+  };
+
+  const handleEdit = () => {
+    setCurrentScreen('start');
+  };
+
+  const handleRestart = () => {
+    setName('');
+    setEmail('');
+    setAgree(false);
+    setCurrentScreen('start');
+  };
+
+  const handleTryAgain = () => {
+    setAttempts(4);
+    setTimeLeft(60);
+    setHintUsed(false);
+    setCurrentScreen('game');
+  };
+
+  const handleEndGame = () => {
+    setCurrentScreen('game');
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <LinearGradient
+      colors={['#87CEEB', '#4B0082']}
+      style={styles.gradient}
+    >
+      {currentScreen === 'start' && (
+        <StartScreen
+          onStart={handleStart}
+          name={name}
+          email={email}
+          agree={agree}
+        />
+      )}
+      {currentScreen === 'confirm' && (
+        <ConfirmScreen
+          name={name}
+          email={email}
+          onEdit={handleEdit}
+          onConfirm={handleConfirm}
+          visible={true}
+        />
+      )}
+      {currentScreen === 'game' && (
+        <GameScreen
+          onRestart={handleRestart}
+          randomNumber={randomNumber}
+          setRandomNumber={setRandomNumber}
+          attempts={attempts}
+          setAttempts={setAttempts}
+          timeLeft={timeLeft}
+          setTimeLeft={setTimeLeft}
+          hintUsed={hintUsed}
+          setHintUsed={setHintUsed}
+          setCurrentScreen={setCurrentScreen}
+          handleEndGame={handleEndGame} // Pass handleEndGame function
+        />
+      )}
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  gradient: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },

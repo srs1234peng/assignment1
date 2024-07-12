@@ -1,0 +1,175 @@
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TextInput, Button, Alert, Image } from 'react-native';
+import Card from '../components/Card';
+import CustomText from '../components/CustomText';
+
+const GameScreen = ({
+  onRestart,
+  randomNumber,
+  setRandomNumber,
+  attempts,
+  setAttempts,
+  timeLeft,
+  setTimeLeft,
+  hintUsed,
+  setHintUsed,
+  handleEndGame // Receive handleEndGame as a prop
+}) => {
+  const [guess, setGuess] = useState('');
+  const [gameState, setGameState] = useState('playing'); // 'playing', 'tryAgain', 'correctGuess', 'gameOver'
+
+  useEffect(() => {
+    if (timeLeft > 0 && gameState === 'playing') {
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (timeLeft <= 0) {
+      Alert.alert('Time is up!', 'You ran out of time.');
+      setGameState('gameOver');
+    }
+  }, [timeLeft, gameState]);
+
+  const handleGuess = () => {
+    const num = parseInt(guess);
+    if (isNaN(num)) {
+      Alert.alert('Invalid Input', 'Please enter a valid number.');
+      return;
+    }
+    if (num === randomNumber) {
+      Alert.alert('Congratulations!', 'You guessed the number correctly!');
+      setGameState('correctGuess');
+    } else {
+      setAttempts(attempts - 1);
+      if (attempts === 1) {
+        Alert.alert('Game Over', 'You ran out of attempts.');
+        setGameState('gameOver');
+      } else {
+        setGameState('tryAgain');
+      }
+    }
+    setGuess('');
+  };
+
+  const handleHint = () => {
+    if (!hintUsed) {
+      setHintUsed(true);
+      Alert.alert('Hint', `The number is ${randomNumber > 50 ? 'greater than 50' : 'less than or equal to 50'}.`);
+    }
+  };
+
+  const handleTryAgain = () => {
+    setGameState('playing');
+    setGuess('');
+  };
+
+  const handleNewGame = () => {
+    setRandomNumber(Math.floor(Math.random() * 100 + 1)); // Set fixed value for testing
+    setAttempts(4);
+    setTimeLeft(60);
+    setHintUsed(false);
+    setGameState('playing');
+  };
+
+  if (gameState === 'tryAgain') {
+    return (
+      <View style={styles.container}>
+        <Card>
+          <CustomText>You did not guess correctly!</CustomText>
+          <View style={styles.buttonContainer}>
+            <Button title="Try Again" onPress={handleTryAgain} color="#007bff" />
+            <Button title="End Game" onPress={() => setGameState('gameOver')} color="#007bff" />
+          </View>
+        </Card>
+      </View>
+    );
+  }
+
+  if (gameState === 'correctGuess') {
+    return (
+      <View style={styles.container}>
+        <Card>
+          <CustomText>You guessed correct!</CustomText>
+          <CustomText>Attempts used: {4 - attempts}</CustomText>
+          <Image
+            source={{ uri: `https://picsum.photos/id/${randomNumber}/100/100` }}
+            style={styles.image}
+          />
+          <Button title="New Game" onPress={handleNewGame} color="#007bff" />
+        </Card>
+      </View>
+    );
+  }
+
+  if (gameState === 'gameOver') {
+    return (
+      <View style={styles.container}>
+        <Card>
+          <CustomText style={styles.title}>The game is over!</CustomText>
+          <Image
+            source={require('../assets/sad_smiley.png')}
+            style={styles.image}
+          />
+          <CustomText>{timeLeft <= 0 ? 'You ran out of time.' : 'You ran out of attempts.'}</CustomText>
+          <Button title="Restart" onPress={onRestart} color="#007bff" />
+        </Card>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      <Card>
+        <CustomText>Guess a number between 1 and 100</CustomText>
+        <CustomText>Attempts left: {attempts}</CustomText>
+        <CustomText>Timer: {timeLeft}s</CustomText>
+        <TextInput
+          style={styles.input}
+          value={guess}
+          onChangeText={setGuess}
+          keyboardType="numeric"
+          editable={attempts > 0}
+        />
+        <Button title="SUBMIT GUESS" onPress={handleGuess} color="#007bff" disabled={attempts <= 0} />
+        <Button title="USE A HINT" onPress={handleHint} disabled={hintUsed} color="#007bff" />
+      </Card>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 20,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+  },
+  restartButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  image: {
+    width: 100,
+    height: 100,
+    marginVertical: 20,
+    alignSelf: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+});
+
+export default GameScreen;
