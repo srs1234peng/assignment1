@@ -65,7 +65,7 @@ const GameScreen = ({
   };
 
   const handleNewGame = () => {
-    setRandomNumber(16); // Set fixed value for testing
+    setRandomNumber(Math.floor(Math.random() * 100 + 1)); // Set fixed value for testing
     handleTryAgain();
   };
 
