@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
-import CheckBox from 'expo-checkbox';
+import { View, StyleSheet, Button, TextInput } from 'react-native';
 import Card from '../components/Card';
-import Input from '../components/Input';
+import CheckBox from 'expo-checkbox';
+import CustomText from '../components/CustomText';
 
 const StartScreen = ({ onStart }) => {
   const [name, setName] = useState('');
@@ -50,26 +50,28 @@ const StartScreen = ({ onStart }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome</Text>
+      <CustomText style={styles.title}>Welcome</CustomText>
       <Card>
-        <Input
+        <TextInput
+          style={styles.input}
           placeholder="Name"
           value={name}
           onChangeText={setName}
         />
-        {nameError ? <Text style={styles.error}>{nameError}</Text> : null}
-        <Input
+        {nameError ? <CustomText style={styles.error}>{nameError}</CustomText> : null}
+        <TextInput
+          style={styles.input}
           placeholder="Email address"
           value={email}
           onChangeText={setEmail}
         />
-        {emailError ? <Text style={styles.error}>{emailError}</Text> : null}
+        {emailError ? <CustomText style={styles.error}>{emailError}</CustomText> : null}
         <View style={styles.checkboxContainer}>
           <CheckBox
             value={agree}
             onValueChange={setAgree}
           />
-          <Text style={styles.label}>I am not a robot</Text>
+          <CustomText style={styles.label}>I am not a robot</CustomText>
         </View>
         <View style={styles.buttonContainer}>
           <Button title="RESET" onPress={handleReset} color="#c2185b" />
@@ -85,6 +87,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#87CEEB', // Light blue background color
   },
   title: {
     fontSize: 24,
@@ -92,11 +96,11 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: '#4B0082', // Indigo color for border
     borderWidth: 1,
-    marginBottom: 20,
+    marginBottom: 10,
     paddingHorizontal: 10,
-    width: '80%',
+    borderRadius: 5,
   },
   checkboxContainer: {
     flexDirection: 'row',
@@ -104,15 +108,15 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   label: {
-    margin: 8,
+    marginLeft: 8,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '100%',
   },
   error: {
     color: 'red',
+    marginBottom: 10,
   },
 });
 

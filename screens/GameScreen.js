@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Button, Alert, Image } from 'react-native';
 import Card from '../components/Card';
+import CustomText from '../components/CustomText';
 
 const GameScreen = ({
   onRestart,
@@ -76,7 +77,7 @@ const GameScreen = ({
     return (
       <View style={styles.container}>
         <Card>
-          <Text style={styles.title}>You did not guess correctly!</Text>
+          <CustomText>You did not guess correctly!</CustomText>
           <View style={styles.buttonContainer}>
             <Button title="Try Again" onPress={handleTryAgain} color="#007bff" />
             <Button title="Exit" onPress={handleExitToGameOver} color="#007bff" />
@@ -90,8 +91,8 @@ const GameScreen = ({
     return (
       <View style={styles.container}>
         <Card>
-          <Text style={styles.title}>You guessed correct!</Text>
-          <Text>Attempts used: {4 - attempts}</Text>
+          <CustomText>You guessed correct!</CustomText>
+          <CustomText>Attempts used: {4 - attempts}</CustomText>
           <Image
             source={{ uri: `https://picsum.photos/id/${randomNumber}/100/100` }}
             style={styles.image}
@@ -106,12 +107,12 @@ const GameScreen = ({
     return (
       <View style={styles.container}>
         <Card>
-          <Text style={styles.title}>The game is over!</Text>
+          <CustomText style={styles.title}>The game is over!</CustomText>
           <Image
             source={require('../assets/sad_smiley.png')}
             style={styles.image}
           />
-          <Text>{timeLeft <= 0 ? 'You ran out of time.' : 'You ran out of attempts.'}</Text>
+          <CustomText>{timeLeft <= 0 ? 'You ran out of time.' : 'You ran out of attempts.'}</CustomText>
           <Button title="Restart" onPress={onRestart} color="#007bff" />
         </Card>
       </View>
@@ -121,9 +122,9 @@ const GameScreen = ({
   return (
     <View style={styles.container}>
       <Card>
-        <Text>Guess a number between 1 and 100</Text>
-        <Text>Attempts left: {attempts}</Text>
-        <Text>Timer: {timeLeft}s</Text>
+        <CustomText>Guess a number between 1 and 100</CustomText>
+        <CustomText>Attempts left: {attempts}</CustomText>
+        <CustomText>Timer: {timeLeft}s</CustomText>
         <TextInput
           style={styles.input}
           value={guess}
@@ -134,17 +135,15 @@ const GameScreen = ({
         <Button title="SUBMIT GUESS" onPress={handleGuess} color="#007bff" disabled={attempts <= 0} />
         <Button title="USE A HINT" onPress={handleHint} disabled={hintUsed} color="#007bff" />
       </Card>
-      <Button title="RESTART" onPress={onRestart} color="#007bff" style={styles.restartButton} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
   },
   input: {
     height: 40,
