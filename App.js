@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import StartScreen from './screens/StartScreen';
 import ConfirmScreen from './screens/ConfirmScreen';
 import GameScreen from './screens/GameScreen';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('start');
@@ -57,7 +58,9 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={['#87CEEB', '#4B0082']}
+      style={styles.gradient}>
       {currentScreen === 'start' && (
         <StartScreen
           onStart={handleStart}
@@ -90,16 +93,14 @@ export default function App() {
           handleEndGame={handleEndGame} // Pass handleEndGame function
         />
       )}
-    </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  gradient: {
     flex: 1,
-    backgroundColor: '#87CEEB',
     alignItems: 'center',
     justifyContent: 'center',
-    color: '#4B0082',
   },
 });
