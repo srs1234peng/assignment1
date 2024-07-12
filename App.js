@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import StartScreen from './screens/StartScreen';
 import ConfirmScreen from './screens/ConfirmScreen';
 import GameScreen from './screens/GameScreen';
-import { LinearGradient } from 'expo-linear-gradient';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('start');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [agree, setAgree] = useState(false);
-  const [randomNumber, setRandomNumber] = useState(Math.floor(Math.random() * 100 + 1));
+  const [randomNumber, setRandomNumber] = useState(16); // Set fixed value for testing
   const [attempts, setAttempts] = useState(4);
   const [timeLeft, setTimeLeft] = useState(60);
   const [hintUsed, setHintUsed] = useState(false);
@@ -24,7 +24,7 @@ export default function App() {
 
   const handleConfirm = () => {
     setCurrentScreen('game');
-    setRandomNumber(Math.floor(Math.random() * 100 + 1));
+    setRandomNumber(16); // Set fixed value for testing
     setAttempts(4);
     setTimeLeft(60);
     setHintUsed(false);
@@ -49,18 +49,14 @@ export default function App() {
   };
 
   const handleEndGame = () => {
-    setCurrentScreen('gameOver');
-  };
-
-  const handleNewGame = () => {
-    setRandomNumber(Math.floor(Math.random() * 100 + 1)); // Set fixed value for testing
-    handleTryAgain();
+    setCurrentScreen('game');
   };
 
   return (
     <LinearGradient
       colors={['#87CEEB', '#4B0082']}
-      style={styles.gradient}>
+      style={styles.gradient}
+    >
       {currentScreen === 'start' && (
         <StartScreen
           onStart={handleStart}

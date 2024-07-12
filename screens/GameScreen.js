@@ -41,10 +41,9 @@ const GameScreen = ({
       setAttempts(attempts - 1);
       if (attempts === 1) {
         Alert.alert('Game Over', 'You ran out of attempts.');
-        setGameState('tryAgain');
+        setGameState('gameOver');
       } else {
-        Alert.alert('Try Again', `Wrong guess! You have ${attempts - 1} attempts left.`);
-        setGuess('');
+        setGameState('tryAgain');
       }
     }
     setGuess('');
@@ -58,19 +57,16 @@ const GameScreen = ({
   };
 
   const handleTryAgain = () => {
+    setGameState('playing');
+    setGuess('');
+  };
+
+  const handleNewGame = () => {
+    setRandomNumber(16); // Set fixed value for testing
     setAttempts(4);
     setTimeLeft(60);
     setHintUsed(false);
     setGameState('playing');
-  };
-
-  const handleNewGame = () => {
-    setRandomNumber(Math.floor(Math.random() * 100 + 1)); // Set fixed value for testing
-    handleTryAgain();
-  };
-
-  const handleExitToGameOver = () => {
-    setGameState('gameOver');
   };
 
   if (gameState === 'tryAgain') {
@@ -80,7 +76,7 @@ const GameScreen = ({
           <CustomText>You did not guess correctly!</CustomText>
           <View style={styles.buttonContainer}>
             <Button title="Try Again" onPress={handleTryAgain} color="#007bff" />
-            <Button title="Exit" onPress={handleExitToGameOver} color="#007bff" />
+            <Button title="End Game" onPress={() => setGameState('gameOver')} color="#007bff" />
           </View>
         </Card>
       </View>
