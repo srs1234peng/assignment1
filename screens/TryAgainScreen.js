@@ -6,7 +6,7 @@ const TryAgainScreen = ({ onTryAgain, onEndGame }) => {
   return (
     <View style={styles.container}>
       <Card>
-        <Text style={styles.title}>You did not guess correctly!</Text>
+        <Text style={styles.title}>You did not guess correct!</Text>
         <View style={styles.buttonContainer}>
           <Button title="TRY AGAIN" onPress={onTryAgain} color="#007bff" />
           <Button title="END THE GAME" onPress={onEndGame} color="#007bff" />

@@ -23,13 +23,15 @@ const GameScreen = ({ onRestart, randomNumber, attempts, setAttempts, timeLeft, 
     }
     if (num === randomNumber) {
       Alert.alert('Congratulations!', 'You guessed the number correctly!');
-      onRestart();
+      setCurrentScreen('correctGuess');
     } else {
       setAttempts(attempts - 1);
       if (attempts === 1) {
+        setAttempts(attempts - 1);
         Alert.alert('Game Over', 'You ran out of attempts.');
         setCurrentScreen('tryAgain');
       } else {
+        setAttempts(attempts - 1);
         Alert.alert('Try Again', `Wrong guess! You have ${attempts - 1} attempts left.`);
       }
     }
