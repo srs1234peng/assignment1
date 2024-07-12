@@ -10,7 +10,7 @@ export default function App() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [agree, setAgree] = useState(false);
-  const [randomNumber, setRandomNumber] = useState(16); // Set fixed value for testing
+  const [randomNumber, setRandomNumber] = useState(Math.floor(Math.random() * 100 + 1));
   const [attempts, setAttempts] = useState(4);
   const [timeLeft, setTimeLeft] = useState(60);
   const [hintUsed, setHintUsed] = useState(false);
@@ -24,7 +24,7 @@ export default function App() {
 
   const handleConfirm = () => {
     setCurrentScreen('game');
-    setRandomNumber(16); // Set fixed value for testing
+    setRandomNumber(Math.floor(Math.random() * 100 + 1)); // Set fixed value for testing
     setAttempts(4);
     setTimeLeft(60);
     setHintUsed(false);
