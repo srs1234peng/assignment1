@@ -8,14 +8,16 @@ export default function App() {
   const [currentScreen, setCurrentScreen] = useState('start');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [agree, setAgree] = useState(false);
   const [randomNumber, setRandomNumber] = useState(16); // Set fixed value for testing
   const [attempts, setAttempts] = useState(4);
   const [timeLeft, setTimeLeft] = useState(60);
   const [hintUsed, setHintUsed] = useState(false);
 
-  const handleStart = (enteredName, enteredEmail) => {
+  const handleStart = (enteredName, enteredEmail, agreed) => {
     setName(enteredName);
     setEmail(enteredEmail);
+    setAgree(agreed);
     setCurrentScreen('confirm');
   };
 
@@ -34,6 +36,7 @@ export default function App() {
   const handleRestart = () => {
     setName('');
     setEmail('');
+    setAgree(false);
     setCurrentScreen('start');
   };
 
@@ -55,7 +58,14 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {currentScreen === 'start' && <StartScreen onStart={handleStart} />}
+      {currentScreen === 'start' && (
+        <StartScreen
+          onStart={handleStart}
+          name={name}
+          email={email}
+          agree={agree}
+        />
+      )}
       {currentScreen === 'confirm' && (
         <ConfirmScreen
           name={name}
@@ -87,9 +97,9 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#87CEEB', 
+    backgroundColor: '#87CEEB',
     alignItems: 'center',
     justifyContent: 'center',
-    color: '#4B0082', 
+    color: '#4B0082',
   },
 });

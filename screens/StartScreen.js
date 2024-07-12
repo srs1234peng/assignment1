@@ -1,15 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Button, TextInput } from 'react-native';
 import Card from '../components/Card';
 import CheckBox from 'expo-checkbox';
 import CustomText from '../components/CustomText';
 
-const StartScreen = ({ onStart }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [agree, setAgree] = useState(false);
+const StartScreen = ({ onStart, name: initialName, email: initialEmail, agree: initialAgree }) => {
+  const [name, setName] = useState(initialName);
+  const [email, setEmail] = useState(initialEmail);
+  const [agree, setAgree] = useState(initialAgree);
   const [nameError, setNameError] = useState('');
   const [emailError, setEmailError] = useState('');
+
+  useEffect(() => {
+    setName(initialName);
+    setEmail(initialEmail);
+    setAgree(initialAgree);
+  }, [initialName, initialEmail, initialAgree]);
 
   const validate = () => {
     let valid = true;
@@ -36,7 +42,7 @@ const StartScreen = ({ onStart }) => {
 
   const handleStart = () => {
     if (validate() && agree) {
-      onStart(name, email);
+      onStart(name, email, agree);
     }
   };
 
